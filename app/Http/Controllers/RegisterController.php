@@ -32,4 +32,15 @@ class RegisterController extends Controller
             'token' => $token,
         ], 201);
     }
+
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Usuário deletado com sucesso!',
+        ], 200);
+    }
 }
