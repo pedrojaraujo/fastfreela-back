@@ -5,33 +5,47 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Psy\Util\Json;
 
 class UserController extends Controller
 {
     public function registerUser(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'user_type' => 'required|string|in:freelancer,contractor',
-        ]);
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+                'user_type' => 'required|string|in:freelancer,contractor',
+            ]);
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']), // Hash da senha
-            'user_type' => $data['user_type'],
-        ]);
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'user_type' => $data['user_type'],
+            ]);
 
-        $token = $user->createToken('api_token')->plainTextToken;
+            $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Usuário criado com sucesso!',
-            'user' => $user,
-            'token' => $token,
-        ], 201);
+            return response()->json([
+                'message' => 'Usuário criado com sucesso!',
+                'user' => $user,
+                'token' => $token,
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
+        }
     }
 
     public function destroyUser($id)
