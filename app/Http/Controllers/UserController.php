@@ -50,36 +50,76 @@ class UserController extends Controller
 
     public function destroyUser($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
 
-        return response()->json([
-            'message' => 'Usuário deletado com sucesso!',
-        ], 200);
+            return response()->json([
+                'message' => 'Usuário deletado com sucesso!',
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Usuário não encontrado',
+            ], 404);
+        } catch (\Exception $e) {
+            if (app()->environment('production')) {
+                return response()->json([
+                    'message' => 'Erro interno do servidor'
+                ], 500);
+            }
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
+        }
     }
 
     public function updateUser(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        $data = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|string|min:6',
-            'user_type' => 'sometimes|string|in:freelancer,contractor',
-        ]);
+            $data = $request->validate([
+                'name' => 'sometimes|string|max:255',
+                'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
+                'password' => 'sometimes|string|min:6',
+                'user_type' => 'sometimes|string|in:freelancer,contractor',
+            ]);
 
-        // Verifica se a senha foi enviada e faz o hash
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+            // Verifica se a senha foi enviada e faz o hash
+            if (isset($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            }
+
+            $user->update($data);
+
+            return response()->json([
+                'message' => 'Usuário atualizado com sucesso!',
+                'user' => $user,
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Usuário não encontrado',
+            ], 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            if (app()->environment('production')) {
+                return response()->json([
+                    'message' => 'Erro interno do servidor'
+                ], 500);
+            }
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
         }
-
-        $user->update($data);
-
-        return response()->json([
-            'message' => 'Usuário atualizado com sucesso!',
-            'user' => $user,
-        ], 200);
-
     }
 }
