@@ -8,10 +8,13 @@ use App\Http\Controllers\UserController;
 Route::post('/login', [AuthController::class, 'login']);
 
 //Logout do usuário
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logoutUser']);
 
 //Registro do usuário
-Route::post('/register', [UserController::class, 'register']);
+Route::post('/registerUser', [UserController::class, 'register']);
 
 //Deletar usuário
-Route::middleware('auth:sanctum')->delete('/delete/{id}', [UserController::class, 'destroy']);
+Route::middleware('auth:sanctum')->delete('/deleteUser/{id}', [UserController::class, 'destroyUser']);
+
+//Editar usuário
+Route::middleware('auth:sanctum')->delete('/updateUser/{id}', [UserController::class, 'updateUser']);

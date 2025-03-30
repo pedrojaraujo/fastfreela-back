@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Psy\Util\Json;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    public function registerUser(Request $request)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
@@ -33,8 +34,7 @@ class UserController extends Controller
         ], 201);
     }
 
-
-    public function destroy($id)
+    public function destroyUser($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
@@ -42,5 +42,30 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Usuário deletado com sucesso!',
         ], 200);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $data = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'sometimes|string|min:6',
+            'user_type' => 'sometimes|string|in:freelancer,contractor',
+        ]);
+
+        // Verifica se a senha foi enviada e faz o hash
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Usuário atualizado com sucesso!',
+            'user' => $user,
+        ], 200);
+
     }
 }
