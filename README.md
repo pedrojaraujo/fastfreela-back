@@ -13,7 +13,7 @@ Esta é a API do FastFreela, um aplicativo que conecta contratantes com prestado
 
 - PHP >= 8.0
 - Composer
-- Banco de dados (MySQL, PostgreSQL, etc.)
+- Banco de dados MySQL.
 
 ## Instalação
 
