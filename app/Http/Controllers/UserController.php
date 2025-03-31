@@ -13,6 +13,19 @@ class UserController extends Controller
     public function registerUser(Request $request)
     {
         try {
+
+            $allInputs = $request->all();
+            $allowedFields = ['name', 'email', 'password', 'user_type'];
+            $extraFields = array_diff(array_keys($allInputs), $allowedFields);
+
+            if (!empty($extraFields)) {
+                return response()->json([
+                    'message' => 'Campos não permitidos na requisição',
+                    'extra_fields' => $extraFields
+                ], status: 400);
+            }
+
+
             $data = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -79,6 +92,18 @@ class UserController extends Controller
     public function updateUser(Request $request, $id)
     {
         try {
+
+            $allInputs = $request->all();
+            $allowedFields = ['name', 'email', 'password', 'user_type'];
+            $extraFields = array_diff(array_keys($allInputs), $allowedFields);
+
+            if (!empty($extraFields)) {
+                return response()->json([
+                    'message' => 'Campos não permitidos na requisição',
+                    'extra_fields' => $extraFields
+                ], status: 400);
+            }
+
             $user = User::findOrFail($id);
 
             $data = $request->validate([
