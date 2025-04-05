@@ -16,6 +16,8 @@
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest"
+        ,
         "barryvdh/laravel-ide-helper": "^3.5",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",

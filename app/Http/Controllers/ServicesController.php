@@ -12,13 +12,36 @@ use Illuminate\Validation\ValidationException;
 class ServicesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *   path="/services",
+     *   tags={"Serviços"},
+     *   summary="Lista todos os serviços",
+     *   @OA\Response(response=200, description="Lista de serviços"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
      */
     public function index()
     {
         return response()->json(Services::with('category')->get(), 200);
     }
 
+    /**
+     * @OA\Post(
+     *   path="/services",
+     *   tags={"Serviços"},
+     *   summary="Cria novo serviço",
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       @OA\Property(property="titulo", type="string", example="Novo serviço"),
+     *       @OA\Property(property="descricao", type="string", example="Descrição do serviço"),
+     *       @OA\Property(property="category_id", type="integer", example=1)
+     *     )
+     *   ),
+     *   @OA\Response(response=201, description="Serviço criado com sucesso"),
+     *   @OA\Response(response=422, description="Erro de validação"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
+     */
     public function store(StoreServicesRequest $request)
     {
         try {
@@ -44,6 +67,23 @@ class ServicesController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *   path="/services/{id}",
+     *   tags={"Serviços"},
+     *   summary="Exibe dados de um serviço",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=200, description="Dados do serviço"),
+     *   @OA\Response(response=404, description="Serviço não encontrado"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
+     */
+
     public function show(Services $service)
     {
         try {
@@ -57,6 +97,30 @@ class ServicesController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *   path="/services/{id}",
+     *   tags={"Serviços"},
+     *   summary="Atualiza um serviço",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       @OA\Property(property="titulo", type="string", example="Serviço atualizado"),
+     *       @OA\Property(property="descricao", type="string", example="Nova descrição"),
+     *       @OA\Property(property="category_id", type="integer", example=1)
+     *     )
+     *   ),
+     *   @OA\Response(response=200, description="Serviço atualizado com sucesso"),
+     *   @OA\Response(response=422, description="Erro de validação"),
+     *   @OA\Response(response=404, description="Serviço não encontrado"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
+     */
     public function update(UpdateServicesRequest $request, Services $service)
     {
         try {
@@ -78,6 +142,22 @@ class ServicesController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *   path="/services/{id}",
+     *   tags={"Serviços"},
+     *   summary="Remove um serviço",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=200, description="Serviço deletado com sucesso"),
+     *   @OA\Response(response=404, description="Serviço não encontrado"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
+     */
     public function destroy(Services $service)
     {
         try {

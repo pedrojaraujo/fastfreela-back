@@ -8,10 +8,37 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Psy\Util\Json;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="FastFreela API",
+ *     description="Documentação da API do FastFreela",
+ *     @OA\Contact(
+ *         email="pedroa990@gmail.com"
+ *     )
+ * )
+ */
 class UserController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/login",
+     *     tags={"Usuário"},
+     *     summary="Login do usuário",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", format="email", example="pedro@email.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="12345678")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Login bem-sucedido"),
+     *     @OA\Response(response=401, description="Credenciais inválidas")
+     * )
+     */
     public function login(Request $request): JsonResponse
     {
         try {
@@ -71,11 +98,40 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *   path="/logout",
+     *   tags={"Usuário"},
+     *   summary="Efetua logout",
+     *   @OA\Response(response=200, description="Logout bem-sucedido")
+     * )
+     */
     public function logout(Request $request): JsonResponse
     {
         $request->user()->tokens()->delete(); // Apaga todos os tokens do usuário autenticado
         return response()->json(['message' => 'Deslogado com sucesso!']);
     }
+
+    /**
+     * @OA\Post(
+     *   path="/registerUser",
+     *   tags={"Usuário"},
+     *   summary="Registra novo usuário",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       required={"name","email","password","user_type"},
+     *       @OA\Property(property="name", type="string"),
+     *       @OA\Property(property="email", type="string", format="email"),
+     *       @OA\Property(property="password", type="string", format="password"),
+     *       @OA\Property(property="user_type", type="string", enum={"freelancer","contractor"})
+     *     )
+     *   ),
+     *   @OA\Response(response=201, description="Usuário criado com sucesso"),
+     *   @OA\Response(response=422, description="Erro de validação")
+     * )
+     */
+
 
     public function registerUser(Request $request)
     {
@@ -128,6 +184,21 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *   path="/deleteUser/{id}",
+     *   tags={"Usuário"},
+     *   summary="Deleta usuário",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=200, description="Usuário deletado"),
+     *   @OA\Response(response=404, description="Usuário não encontrado")
+     * )
+     */
     public function destroyUser($id)
     {
         try {
@@ -156,6 +227,30 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *   path="/updateUser/{id}",
+     *   tags={"Usuário"},
+     *   summary="Atualiza dados do usuário",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       @OA\Property(property="name", type="string"),
+     *       @OA\Property(property="email", type="string", format="email"),
+     *       @OA\Property(property="password", type="string", format="password"),
+     *       @OA\Property(property="user_type", type="string", enum={"freelancer","contractor"})
+     *     )
+     *   ),
+     *   @OA\Response(response=200, description="Usuário atualizado"),
+     *   @OA\Response(response=404, description="Usuário não encontrado"),
+     *   @OA\Response(response=422, description="Erro de validação")
+     * )
+     */
     public function updateUser(Request $request, $id)
     {
         try {

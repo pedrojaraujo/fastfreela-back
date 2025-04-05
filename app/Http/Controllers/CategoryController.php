@@ -6,11 +6,18 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Annotations as OA;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *   path="/categories",
+     *   tags={"Categorias"},
+     *   summary="Lista todas as categorias",
+     *   @OA\Response(response=200, description="Lista de categorias"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
      */
     public function index()
     {
@@ -18,7 +25,19 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *   path="/categories",
+     *   tags={"Categorias"},
+     *   summary="Cria nova categoria",
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       @OA\Property(property="nome", type="string", example="Categoria X")
+     *     )
+     *   ),
+     *   @OA\Response(response=201, description="Categoria criada com sucesso"),
+     *   @OA\Response(response=422, description="Erro de validação"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -47,7 +66,20 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *   path="/categories/{id}",
+     *   tags={"Categorias"},
+     *   summary="Exibe dados de uma categoria",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=200, description="Dados da categoria"),
+     *   @OA\Response(response=404, description="Categoria não encontrada"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
      */
     public function show(Category $category)
     {
@@ -63,7 +95,26 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *   path="/categories/{id}",
+     *   tags={"Categorias"},
+     *   summary="Atualiza uma categoria",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       @OA\Property(property="nome", type="string", example="Categoria X atualizada")
+     *     )
+     *   ),
+     *   @OA\Response(response=200, description="Categoria atualizada com sucesso"),
+     *   @OA\Response(response=422, description="Erro de validação"),
+     *   @OA\Response(response=404, description="Categoria não encontrada"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
@@ -89,7 +140,20 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *   path="/categories/{id}",
+     *   tags={"Categorias"},
+     *   summary="Remove uma categoria",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(response=200, description="Categoria deletada com sucesso"),
+     *   @OA\Response(response=404, description="Categoria não encontrada"),
+     *   @OA\Response(response=500, description="Erro interno do servidor")
+     * )
      */
     public function destroy(Category $category)
     {
