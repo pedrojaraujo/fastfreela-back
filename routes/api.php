@@ -19,6 +19,3 @@ Route::middleware('auth:sanctum')->delete('/deleteUser/{id}', [UserController::c
 
 //Editar usuário
 Route::middleware('auth:sanctum')->put('/updateUser/{id}', [UserController::class, 'updateUser']);
-
-
-//    CATEGORIA        //
