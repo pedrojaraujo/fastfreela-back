@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ServicesController;
 use OpenApi\Annotations as OA;
 
 
@@ -33,3 +34,15 @@ Route::middleware('auth:sanctum')->put('/updateUser/{id}', [UserController::clas
 //   DELETE  /api/categories/{id}   -> Deletar uma categoria
 
 Route::middleware('auth:sanctum')->apiResource('categories', CategoryController::class);
+
+
+//    Serviços     //
+
+// Endpoints:
+//   GET     /api/services        -> Listar categorias
+//   POST    /api/services        -> Criar nova categoria
+//   GET     /api/services/{id}   -> Ver detalhes de uma categoria
+//   PUT     /api/services/{id}   -> Atualizar uma categoria
+//   DELETE  /api/services/{id}   -> Deletar uma categoria
+
+Route::middleware('auth:sanctum')->apiResource('services', ServicesController::class);

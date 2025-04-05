@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreServicesRequest;
+use App\Http\Requests\UpdateServicesRequest;
+use App\Models\Services;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+
 
 class ServicesController extends Controller
 {
@@ -11,38 +16,79 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Services::with('category')->get(), 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreServicesRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            $data['contractor_id'] = Auth::id();
+
+            $service = Services::create($data);
+
+            return response()->json([
+                'message' => 'Serviço criado com sucesso!',
+                'service' => $service,
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Services $service)
     {
-        //
+        try {
+            return response()->json($service->load('category'), 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateServicesRequest $request, Services $service)
     {
-        //
+        try {
+            $service->update($request->validated());
+
+            return response()->json([
+                'message' => 'Serviço atualizado com sucesso!',
+                'service' => $service,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Services $service)
     {
-        //
+        try {
+            $service->delete();
+            return response()->json(['message' => 'Serviço deletado com sucesso!']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
+        }
     }
 }
