@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
+//    USUÁRIO        //
 //Login do usuário
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -18,3 +19,6 @@ Route::middleware('auth:sanctum')->delete('/deleteUser/{id}', [UserController::c
 
 //Editar usuário
 Route::middleware('auth:sanctum')->put('/updateUser/{id}', [UserController::class, 'updateUser']);
+
+
+//    CATEGORIA        //
