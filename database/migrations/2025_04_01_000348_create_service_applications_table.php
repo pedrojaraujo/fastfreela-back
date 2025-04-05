@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('service_applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('service_id')->constrained()->onDelete('cascade'); // Relacionado a um serviço
+            $table->foreignId('service_id')->constrained('services')->onDelete('cascade'); // Relacionado a um serviço
             $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade'); // Relacionado a um freelancer
             $table->text('message')->nullable(); // Mensagem do freelancer
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); // Status da aplicação

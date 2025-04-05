@@ -12,11 +12,12 @@ return new class extends Migration {
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('service_id');
-            $table->unsignedBigInteger('freelancer_id');
+            $table->foreignId('contractor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->text('message')->nullable();
             $table->enum('status', ['pendente', 'aceito', 'rejeitado'])->default('pendente');
             $table->timestamps();
+
         });
     }
 
