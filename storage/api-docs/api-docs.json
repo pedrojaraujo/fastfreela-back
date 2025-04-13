@@ -9,13 +9,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/categories": {
+        "/api/categories": {
             "get": {
                 "tags": [
                     "Categorias"
                 ],
                 "summary": "Lista todas as categorias",
-                "operationId": "ead5fb1cf2a7453acb2e37928a1b1eaf",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
                 "responses": {
                     "200": {
                         "description": "Lista de categorias"
@@ -30,7 +30,7 @@
                     "Categorias"
                 ],
                 "summary": "Cria nova categoria",
-                "operationId": "bb02f0320882db37f99574196577e446",
+                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -59,13 +59,13 @@
                 }
             }
         },
-        "/categories/{id}": {
+        "/api/categories/{id}": {
             "get": {
                 "tags": [
                     "Categorias"
                 ],
                 "summary": "Exibe dados de uma categoria",
-                "operationId": "4cdf41756315109f1efc72787db5830a",
+                "operationId": "c68e76d323c008827a9e47398b1583de",
                 "parameters": [
                     {
                         "name": "id",
@@ -93,7 +93,7 @@
                     "Categorias"
                 ],
                 "summary": "Atualiza uma categoria",
-                "operationId": "19954b1f8aa4916b5f032dc28ea36a24",
+                "operationId": "0e686b2748211cc688333ed705dc111f",
                 "parameters": [
                     {
                         "name": "id",
@@ -139,7 +139,7 @@
                     "Categorias"
                 ],
                 "summary": "Remove uma categoria",
-                "operationId": "f1b8af6e84bd52b9594d98bde748ebd6",
+                "operationId": "4c12e22a7f8c617bd83bfa1fdc05428d",
                 "parameters": [
                     {
                         "name": "id",
@@ -163,13 +163,158 @@
                 }
             }
         },
-        "/services": {
+        "/api/service-applications": {
+            "post": {
+                "tags": [
+                    "Aplicações de Serviço"
+                ],
+                "summary": "Cria nova aplicação",
+                "operationId": "5fd049e6fa8143ad81c57be8a4b86497",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "service_id"
+                                ],
+                                "properties": {
+                                    "service_id": {
+                                        "type": "integer"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Aplicação criada com sucesso"
+                    },
+                    "409": {
+                        "description": "Conflito: aplicação já existe"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/service-applications/{id}": {
+            "put": {
+                "tags": [
+                    "Aplicações de Serviço"
+                ],
+                "summary": "Atualiza status de uma aplicação",
+                "operationId": "a5303a91e28b2867386002d11fd4b28d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "accepted",
+                                            "rejected"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Status atualizado"
+                    },
+                    "403": {
+                        "description": "Ação não autorizada"
+                    },
+                    "404": {
+                        "description": "Aplicação não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/my-applications": {
+            "get": {
+                "tags": [
+                    "Aplicações de Serviço"
+                ],
+                "summary": "Lista as aplicações realizadas pelo freelancer autenticado",
+                "operationId": "2dd9141b11fdf1486265d20c576edd90",
+                "responses": {
+                    "200": {
+                        "description": "Lista de aplicações do freelancer"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/services/{serviceId}/applications": {
+            "get": {
+                "tags": [
+                    "Aplicações de Serviço"
+                ],
+                "summary": "Lista as aplicações para um serviço criado pelo contratante autenticado",
+                "operationId": "93408122e2fc6bd5038079b511055a61",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de aplicações"
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado ou não pertence ao contratante"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/services": {
             "get": {
                 "tags": [
                     "Serviços"
                 ],
                 "summary": "Lista todos os serviços",
-                "operationId": "0f76dda9be6628c47b978d3b7077529a",
+                "operationId": "b2cc16bd5971e5680a4dd46c9c383f65",
                 "responses": {
                     "200": {
                         "description": "Lista de serviços"
@@ -184,7 +329,7 @@
                     "Serviços"
                 ],
                 "summary": "Cria novo serviço",
-                "operationId": "ee694c210db03e85b35b350b82c18f1b",
+                "operationId": "806d2b381734b9494d468322434ba121",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -221,13 +366,13 @@
                 }
             }
         },
-        "/services/{id}": {
+        "/api/services/{id}": {
             "get": {
                 "tags": [
                     "Serviços"
                 ],
                 "summary": "Exibe dados de um serviço",
-                "operationId": "ee0c95755e1374f6e92ee6ae1cdddfb6",
+                "operationId": "6b8504a5f57dba118512a83b265e6040",
                 "parameters": [
                     {
                         "name": "id",
@@ -255,7 +400,7 @@
                     "Serviços"
                 ],
                 "summary": "Atualiza um serviço",
-                "operationId": "b9a49c8480cb32ec2fa69841690d863e",
+                "operationId": "a077666135d725a905538f3f05b4039c",
                 "parameters": [
                     {
                         "name": "id",
@@ -309,7 +454,7 @@
                     "Serviços"
                 ],
                 "summary": "Remove um serviço",
-                "operationId": "cbb6bc64cf61a4812d1c6da5421fd545",
+                "operationId": "66aaf62153671736305fd4cdd76702fc",
                 "parameters": [
                     {
                         "name": "id",
@@ -333,13 +478,13 @@
                 }
             }
         },
-        "/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Login do usuário",
-                "operationId": "abc53c091ac89d7a2af0892997d1ee08",
+                "operationId": "0fc9610184083ac6dddab2c63139225a",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -376,13 +521,13 @@
                 }
             }
         },
-        "/logout": {
+        "/api/logout": {
             "post": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Efetua logout",
-                "operationId": "43958ea73917f8e50945f73452c3bff0",
+                "operationId": "67d5147477c548bfbc3f982833bbc7bd",
                 "responses": {
                     "200": {
                         "description": "Logout bem-sucedido"
@@ -390,13 +535,13 @@
                 }
             }
         },
-        "/registerUser": {
+        "/api/registerUser": {
             "post": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Registra novo usuário",
-                "operationId": "83c838863f1dc9d0fe198493c71e48bf",
+                "operationId": "47fbc9f5eed14b7f970af886a7ce99bc",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -443,13 +588,13 @@
                 }
             }
         },
-        "/deleteUser/{id}": {
+        "/api/deleteUser/{id}": {
             "delete": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Deleta usuário",
-                "operationId": "0c3607a84e73a12fd349b8a721a32d03",
+                "operationId": "d95bcc7dd8f8e1943afee9f4eb5ffffe",
                 "parameters": [
                     {
                         "name": "id",
@@ -470,13 +615,13 @@
                 }
             }
         },
-        "/updateUser/{id}": {
+        "/api/updateUser/{id}": {
             "put": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Atualiza dados do usuário",
-                "operationId": "da0f1a10b319b56f3e642a221db063b8",
+                "operationId": "0e7cf481f7889e1c541b8461f8a7ef6b",
                 "parameters": [
                     {
                         "name": "id",
@@ -534,6 +679,10 @@
         {
             "name": "Categorias",
             "description": "Categorias"
+        },
+        {
+            "name": "Aplicações de Serviço",
+            "description": "Aplicações de Serviço"
         },
         {
             "name": "Serviços",

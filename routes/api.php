@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ServiceApplicationController;
 
 
 //    USUÁRIO        //
@@ -44,3 +45,20 @@ Route::middleware('auth:sanctum')->apiResource('categories', CategoryController:
 //   DELETE  /api/services/{id}   -> Deletar um serviço
 
 Route::middleware('auth:sanctum')->apiResource('services', ServicesController::class);
+
+
+//    Aplicações ao Serviços     //
+
+// Endpoints:
+//   GET     /api/service-applications      -> Listar aplicações
+//   POST    /api/service-applications      -> Aplicar aos serviços
+
+Route::apiResource('service-applications', ServiceApplicationController::class)->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Freelancer lista as aplicações feitas
+    Route::get('/my-applications', [ServiceApplicationController::class, 'myApplications']);
+
+    // Contratante lista aplicações para um serviço que ele criou
+    Route::get('/services/{serviceId}/applications', [ServiceApplicationController::class, 'applicationsForService']);
+});
