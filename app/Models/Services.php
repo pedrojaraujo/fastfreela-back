@@ -25,17 +25,17 @@ class Services extends Model
         'contractor_id'
     ];
 
-    public function category()
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function contractor()
+    public function contractor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'contractor_id');
     }
 
-    public function applications()
+    public function applications(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ServiceApplication::class);
     }

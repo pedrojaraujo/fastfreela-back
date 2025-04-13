@@ -24,7 +24,7 @@ class UserController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/login",
+     *     path="/api/login",
      *     tags={"Usuário"},
      *     summary="Login do usuário",
      *     @OA\RequestBody(
@@ -100,7 +100,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/logout",
+     *   path="/api/logout",
      *   tags={"Usuário"},
      *   summary="Efetua logout",
      *   @OA\Response(response=200, description="Logout bem-sucedido")
@@ -114,7 +114,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/registerUser",
+     *   path="/api/registerUser",
      *   tags={"Usuário"},
      *   summary="Registra novo usuário",
      *   @OA\RequestBody(
@@ -186,7 +186,7 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *   path="/deleteUser/{id}",
+     *   path="/api/deleteUser/{id}",
      *   tags={"Usuário"},
      *   summary="Deleta usuário",
      *   @OA\Parameter(
@@ -229,7 +229,7 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *   path="/updateUser/{id}",
+     *   path="/api/updateUser/{id}",
      *   tags={"Usuário"},
      *   summary="Atualiza dados do usuário",
      *   @OA\Parameter(

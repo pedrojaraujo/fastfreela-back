@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     /**
      * @OA\Get(
-     *   path="/categories",
+     *   path="/api/categories",
      *   tags={"Categorias"},
      *   summary="Lista todas as categorias",
      *   @OA\Response(response=200, description="Lista de categorias"),
@@ -26,7 +26,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/categories",
+     *   path="/api/categories",
      *   tags={"Categorias"},
      *   summary="Cria nova categoria",
      *   @OA\RequestBody(
@@ -67,7 +67,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *   path="/categories/{id}",
+     *   path="/api/categories/{id}",
      *   tags={"Categorias"},
      *   summary="Exibe dados de uma categoria",
      *   @OA\Parameter(
@@ -96,7 +96,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Put(
-     *   path="/categories/{id}",
+     *   path="/api/categories/{id}",
      *   tags={"Categorias"},
      *   summary="Atualiza uma categoria",
      *   @OA\Parameter(
@@ -141,7 +141,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Delete(
-     *   path="/categories/{id}",
+     *   path="/api/categories/{id}",
      *   tags={"Categorias"},
      *   summary="Remove uma categoria",
      *   @OA\Parameter(

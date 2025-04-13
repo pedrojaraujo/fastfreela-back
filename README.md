@@ -7,7 +7,7 @@ A API foi desenvolvida utilizando **Laravel** e fornece endpoints RESTful para a
 
 ## 🔧 Tecnologias Utilizadas
 
-- **PHP 8.0+** – Linguagem principal do backend.
+- **PHP 8.4** – Linguagem principal do backend.
 - **Laravel** – Framework PHP moderno e robusto.
 - **Laravel Sanctum** – Autenticação de APIs.
 - **L5-Swagger** – Geração automática de documentação Swagger/OpenAPI.
@@ -18,7 +18,7 @@ A API foi desenvolvida utilizando **Laravel** e fornece endpoints RESTful para a
 
 ## ⚙️ Requisitos
 
-- PHP >= 8.2
+- PHP >= 8.4
 - Composer
 - Banco de dados MySQL
 - Extensões PHP recomendadas: `pdo`, `mbstring`, `openssl`, `tokenizer`, `xml`

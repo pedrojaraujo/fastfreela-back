@@ -7,27 +7,28 @@ use App\Http\Requests\UpdateServicesRequest;
 use App\Models\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Annotations as OA;
 
 
 class ServicesController extends Controller
 {
     /**
      * @OA\Get(
-     *   path="/services",
+     *   path="/api/services",
      *   tags={"Serviços"},
      *   summary="Lista todos os serviços",
      *   @OA\Response(response=200, description="Lista de serviços"),
      *   @OA\Response(response=500, description="Erro interno do servidor")
      * )
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         return response()->json(Services::with('category')->get(), 200);
     }
 
     /**
      * @OA\Post(
-     *   path="/services",
+     *   path="/api/services",
      *   tags={"Serviços"},
      *   summary="Cria novo serviço",
      *   @OA\RequestBody(
@@ -42,7 +43,7 @@ class ServicesController extends Controller
      *   @OA\Response(response=500, description="Erro interno do servidor")
      * )
      */
-    public function store(StoreServicesRequest $request)
+    public function store(StoreServicesRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $data = $request->validated();
@@ -69,7 +70,7 @@ class ServicesController extends Controller
 
     /**
      * @OA\Get(
-     *   path="/services/{id}",
+     *   path="/api/services/{id}",
      *   tags={"Serviços"},
      *   summary="Exibe dados de um serviço",
      *   @OA\Parameter(
@@ -99,7 +100,7 @@ class ServicesController extends Controller
 
     /**
      * @OA\Put(
-     *   path="/services/{id}",
+     *   path="/api/services/{id}",
      *   tags={"Serviços"},
      *   summary="Atualiza um serviço",
      *   @OA\Parameter(
@@ -144,7 +145,7 @@ class ServicesController extends Controller
 
     /**
      * @OA\Delete(
-     *   path="/services/{id}",
+     *   path="/api/services/{id}",
      *   tags={"Serviços"},
      *   summary="Remove um serviço",
      *   @OA\Parameter(
