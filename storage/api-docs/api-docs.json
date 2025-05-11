@@ -478,6 +478,36 @@
                 }
             }
         },
+        "/api/my-services": {
+            "get": {
+                "tags": [
+                    "Serviços"
+                ],
+                "summary": "Exibe dados do serviço cadastrado pelo usuário logado.",
+                "operationId": "bba7f476c6f9e3346f62e47c41841513",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do serviços cadastrados pelo usuário."
+                    },
+                    "204": {
+                        "description": "Requisição feita com sucesso, porém, usuário sem serviços cadastrados."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
         "/api/login": {
             "post": {
                 "tags": [
