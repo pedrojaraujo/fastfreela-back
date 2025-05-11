@@ -98,6 +98,31 @@ class ServicesController extends Controller
         }
     }
 
+    public function showMyServices(Services $service)
+    {
+        try {
+
+            $userId = Auth::id();
+
+            $service = Services::with('category')->where('contractor_id', $userId)->get();
+
+            if ($service->isEmpty()) {
+                return response()->json([
+                    'message' => 'Nenhum serviço encontrado.'
+                ], 204);
+            }
+
+            return response()->json($service->load('category'), 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
+        }
+    }
+
     /**
      * @OA\Put(
      *   path="/api/services/{id}",

@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->apiResource('categories', CategoryController:
 //   DELETE  /api/services/{id}   -> Deletar um serviço
 
 Route::middleware('auth:sanctum')->apiResource('services', ServicesController::class);
-
+Route::middleware('auth:sanctum')->get('/my-services', [ServicesController::class, 'showMyServices']);
 
 //    Aplicações ao Serviços     //
 
