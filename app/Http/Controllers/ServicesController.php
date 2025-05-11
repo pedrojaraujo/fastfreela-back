@@ -102,15 +102,9 @@ class ServicesController extends Controller
      * @OA\Get(
      *   path="/api/my-services",
      *   tags={"Serviços"},
-     *   summary="Exibe dados do serviço cadastrado pelo usuário logado.",
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(type="integer")
-     *   ),
-     *   @OA\Response(response=200, description="Dados do serviços cadastrados pelo usuário."),
-     *   @OA\Response(response=204, description="Requisição feita com sucesso, porém, usuário sem serviços cadastrados."),
+     *   summary="Exibe dados dos serviços cadastrados pelo usuário logado.",
+     *   @OA\Response(response=200, description="Dados dos serviços cadastrados pelo usuário."),
+     *   @OA\Response(response=204, description="Requisição feita com sucesso, porém o usuário não possui serviços cadastrados."),
      *   @OA\Response(response=500, description="Erro interno do servidor")
      * )
      */
