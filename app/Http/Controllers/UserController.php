@@ -35,8 +35,48 @@ class UserController extends Controller
      *             @OA\Property(property="password", type="string", format="password", example="12345678")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Login bem-sucedido"),
-     *     @OA\Response(response=401, description="Credenciais inválidas")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login bem-sucedido",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Login feito com sucesso!"),
+     *             @OA\Property(property="token", type="string", example="1|abcde12345..."),
+     *             @OA\Property(
+     *                 property="user",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Pedro Joaquim"),
+     *                 @OA\Property(property="email", type="string", example="pedro@email.com"),
+     *                 @OA\Property(property="user_type", type="string", enum={"freelancer", "contractor"}, example="freelancer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Credenciais inválidas",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Credenciais inválidas!")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Erro de validação"),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 additionalProperties=@OA\Property(type="array", @OA\Items(type="string"))
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro interno do servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Erro interno do servidor")
+     *         )
+     *     )
      * )
      */
     public function login(Request $request): JsonResponse
@@ -76,7 +116,13 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => 'Login feito com sucesso!',
-                'token' => $token
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'user_type' => $user->user_type,
+                ]
             ], status: 200);
         } catch (ValidationException $e) {
             return response()->json([
