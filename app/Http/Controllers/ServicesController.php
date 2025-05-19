@@ -23,7 +23,7 @@ class ServicesController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        return response()->json(Services::with('category')->get(), 200);
+        return response()->json(Services::all(), 200);
     }
 
     /**
@@ -88,7 +88,7 @@ class ServicesController extends Controller
     public function show(Services $service)
     {
         try {
-            return response()->json($service->load('category'), 200);
+            return response()->json($service, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage(),
@@ -114,7 +114,7 @@ class ServicesController extends Controller
 
             $userId = Auth::id();
 
-            $service = Services::with('category')->where('contractor_id', $userId)->get();
+            $service = Services::where('contractor_id', $userId)->get();
 
             if ($service->isEmpty()) {
                 return response()->json([
@@ -122,7 +122,7 @@ class ServicesController extends Controller
                 ], 204);
             }
 
-            return response()->json($service->load('category'), 200);
+            return response()->json($service, 200);
 
         } catch (\Exception $e) {
             return response()->json([
